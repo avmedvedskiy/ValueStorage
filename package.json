@@ -1,0 +1,12 @@
+{
+  "name": "com.avmedvedskiy.valuestorage",
+  "displayName": "Value Storage",
+  "version": "1.0.1",
+  "unity": "2018.4",
+  "author": "avmedvedskiy",
+  "description": "Const, Value storages based on Scriptable Objects for dropdown attributes",
+  "keywords": [
+    "valuestorage",
+    "conststorage"
+  ]
+}
