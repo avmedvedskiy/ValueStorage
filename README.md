@@ -30,4 +30,9 @@ Draw alias in editor, set value in variable
 
 ![image](https://user-images.githubusercontent.com/17832838/153371934-8c91c763-358d-4b31-8205-35e96c99f2fe.png)
 
+#### Install via git URL
+
+`https://github.com/avmedvedskiy/ValueStorage.git`
+
+from the `Add package from git URL` option.
 
