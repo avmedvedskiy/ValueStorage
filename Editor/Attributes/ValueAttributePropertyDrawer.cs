@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+
 namespace ValueStorage
 {
     [CustomPropertyDrawer(typeof(ValueAttribute))]
@@ -14,6 +15,7 @@ namespace ValueStorage
         protected int selectionIndex = 0;
         protected int constantsIndex = 0;
         protected ValueStorage storage = null;
+
         protected ValueAttribute Target
         {
             get { return attribute as ValueAttribute; }
@@ -33,7 +35,8 @@ namespace ValueStorage
             var valueProp = property.FindPropertyRelative("v");
 
             var labelRect = new Rect(position.x, position.y, EditorGUIUtility.labelWidth, position.height);
-            var buttonRect = new Rect(position.x + EditorGUIUtility.labelWidth, position.y, position.width - EditorGUIUtility.labelWidth, position.height);
+            var buttonRect = new Rect(position.x + EditorGUIUtility.labelWidth, position.y,
+                position.width - EditorGUIUtility.labelWidth, position.height);
 
             EditorGUI.LabelField(labelRect, label);
             if (GUI.Button(buttonRect, GetAliaseByKey(valueProp, keyProp, storage), EditorStyles.popup))
@@ -72,30 +75,49 @@ namespace ValueStorage
             EditorGUI.EndProperty();
         }
 
-        protected void SetConstant(SerializedProperty property, SerializedProperty keyProperty, int selectionIndex, ValueStorage constants)
+        protected void SetConstant(SerializedProperty property, SerializedProperty keyProperty, int selectionIndex,
+            ValueStorage constants)
         {
             switch (property.propertyType)
             {
                 case SerializedPropertyType.Integer:
-                    property.intValue = selectionIndex != -1 && selectionIndex < constants.intValues.Count ? constants.intValues[selectionIndex].v : -1;
-                    keyProperty.stringValue = selectionIndex != -1 && selectionIndex < constants.intValues.Count ? constants.intValues[selectionIndex].k : string.Empty;
+                    property.intValue = selectionIndex != -1 && selectionIndex < constants.intValues.Count
+                        ? constants.intValues[selectionIndex].v
+                        : -1;
                     break;
                 //case SerializedPropertyType.Float:
                 //    property.floatValue = selectionIndex != -1 && selectionIndex < constants.floatValues.Count ? constants.floatValues[selectionIndex].value : 0.0f;
                 //    keyProperty.stringValue = selectionIndex != -1 && selectionIndex < constants.floatValues.Count ? constants.floatValues[selectionIndex].key : string.Empty;
                 //    break;
                 case SerializedPropertyType.String:
-                    property.stringValue = selectionIndex != -1 && selectionIndex < constants.stringValues.Count ? constants.stringValues[selectionIndex].v : string.Empty;
-                    keyProperty.stringValue = selectionIndex != -1 && selectionIndex < constants.stringValues.Count ? constants.stringValues[selectionIndex].k : string.Empty;
+                    property.stringValue = selectionIndex != -1 && selectionIndex < constants.stringValues.Count
+                        ? constants.stringValues[selectionIndex].v
+                        : string.Empty;
+                    break;
+            }
+
+            switch (keyProperty.propertyType)
+            {
+                case SerializedPropertyType.Integer:
+                    keyProperty.intValue = selectionIndex != -1 && selectionIndex < constants.intValues.Count
+                        ? constants.intValues[selectionIndex].v
+                        : -1;
+                    break;
+                //case SerializedPropertyType.Float:
+                //    property.floatValue = selectionIndex != -1 && selectionIndex < constants.floatValues.Count ? constants.floatValues[selectionIndex].value : 0.0f;
+                //    keyProperty.stringValue = selectionIndex != -1 && selectionIndex < constants.floatValues.Count ? constants.floatValues[selectionIndex].key : string.Empty;
+                //    break;
+                case SerializedPropertyType.String:
+                    keyProperty.stringValue = selectionIndex != -1 && selectionIndex < constants.stringValues.Count
+                        ? constants.stringValues[selectionIndex].k
+                        : string.Empty;
                     break;
             }
         }
 
         protected void FindAsset(SerializedObject obj)
         {
-            bool shouldSearchInSameFolder = false;
-            if (obj.targetObject is ScriptableObject)
-                shouldSearchInSameFolder = true;
+            bool shouldSearchInSameFolder = obj.targetObject is ScriptableObject;
 
             var assets = AssetDatabase.FindAssets(STORAGE_TYPE);
             var neededAssetPath = string.Empty;
@@ -114,7 +136,7 @@ namespace ValueStorage
 
             if (shouldSearchInSameFolder)
             {
-                string path = AssetDatabase.GetAssetPath(obj.targetObject); 
+                string path = AssetDatabase.GetAssetPath(obj.targetObject);
                 for (int i = 0; i < paths.Count; i++)
                 {
                     if (Path.GetDirectoryName(path) == Path.GetDirectoryName(paths[i]))
@@ -123,7 +145,6 @@ namespace ValueStorage
                         break;
                     }
                 }
-
             }
 
             if (!string.IsNullOrEmpty(neededAssetPath))
@@ -133,24 +154,29 @@ namespace ValueStorage
         }
 
 
-
-        protected void SetKey(SerializedProperty property, SerializedProperty keyProperty, int selectionIndex, ValueStorage constants)
+        protected void SetKey(SerializedProperty property, SerializedProperty keyProperty, int selectionIndex,
+            ValueStorage constants)
         {
             switch (property.propertyType)
             {
                 case SerializedPropertyType.Integer:
-                    keyProperty.stringValue = selectionIndex != -1 && selectionIndex < constants.intValues.Count ? constants.intValues[selectionIndex].k : string.Empty;
+                    keyProperty.stringValue = selectionIndex != -1 && selectionIndex < constants.intValues.Count
+                        ? constants.intValues[selectionIndex].k
+                        : string.Empty;
                     break;
                 //case SerializedPropertyType.Float:
                 //    keyProperty.stringValue = selectionIndex != -1 && selectionIndex < constants.floatValues.Count ? constants.floatValues[selectionIndex].key : string.Empty;
                 //    break;
                 case SerializedPropertyType.String:
-                    keyProperty.stringValue = selectionIndex != -1 && selectionIndex < constants.stringValues.Count ? constants.stringValues[selectionIndex].k : string.Empty;
+                    keyProperty.stringValue = selectionIndex != -1 && selectionIndex < constants.stringValues.Count
+                        ? constants.stringValues[selectionIndex].k
+                        : string.Empty;
                     break;
             }
         }
 
-        protected void SetSelectionIndex(SerializedProperty valueProperty, SerializedProperty keyProperty, ref int selectionIndex, ValueStorage constants)
+        protected void SetSelectionIndex(SerializedProperty valueProperty, SerializedProperty keyProperty,
+            ref int selectionIndex, ValueStorage constants)
         {
             switch (valueProperty.propertyType)
             {
@@ -171,10 +197,15 @@ namespace ValueStorage
             List<string> keys = new List<string>();
             switch (property.propertyType)
             {
-                case SerializedPropertyType.Integer: keys = constants.intValues.Select(x => x.k).ToList(); break;
+                case SerializedPropertyType.Integer:
+                    keys = constants.intValues.Select(x => x.k).ToList();
+                    break;
                 //case SerializedPropertyType.Float: keys = constants.floatValues.Select(x => x.k).ToList(); break;
-                case SerializedPropertyType.String: keys = constants.stringValues.Select(x => x.k).ToList(); break;
+                case SerializedPropertyType.String:
+                    keys = constants.stringValues.Select(x => x.k).ToList();
+                    break;
             }
+
             return keys;
         }
 
@@ -183,14 +214,20 @@ namespace ValueStorage
             List<string> keys = new List<string>();
             switch (property.propertyType)
             {
-                case SerializedPropertyType.Integer: keys = constants.intValues.Select(x => x.a).ToList(); break;
+                case SerializedPropertyType.Integer:
+                    keys = constants.intValues.Select(x => x.a).ToList();
+                    break;
                 //case SerializedPropertyType.Float: keys = constants.floatValues.Select(x => x.a).ToList(); break;
-                case SerializedPropertyType.String: keys = constants.stringValues.Select(x => x.a).ToList(); break;
+                case SerializedPropertyType.String:
+                    keys = constants.stringValues.Select(x => x.a).ToList();
+                    break;
             }
+
             return keys;
         }
 
-        protected string GetAliaseByKey(SerializedProperty valueProperty, SerializedProperty keyProperty, ValueStorage constants)
+        protected string GetAliaseByKey(SerializedProperty valueProperty, SerializedProperty keyProperty,
+            ValueStorage constants)
         {
             string alias = string.Empty;
 
@@ -200,7 +237,12 @@ namespace ValueStorage
             switch (valueProperty.propertyType)
             {
                 case SerializedPropertyType.Integer:
-                    var iv = constants.intValues.Find(x => x.k == keyProperty.stringValue);
+                    IntAliasValue iv = null;
+                    if (keyProperty.propertyType == SerializedPropertyType.String)
+                        iv = constants.intValues.Find(x => x.k == keyProperty.stringValue);
+                    else if (keyProperty.propertyType == SerializedPropertyType.Integer)
+                        iv = constants.intValues.Find(x => x.v == keyProperty.intValue);
+
                     if (iv != null)
                         alias = iv.a;
                     break;
@@ -211,8 +253,11 @@ namespace ValueStorage
                         alias = sv.a;
                     break;
             }
+
             if (string.IsNullOrEmpty(alias))
-                alias = keyProperty.stringValue;// if not find alias set key;
+                alias = keyProperty.propertyType == SerializedPropertyType.String
+                    ? keyProperty.stringValue
+                    : ""; // if not find alias set key;
 
             return alias;
         }
@@ -231,7 +276,9 @@ namespace ValueStorage
         protected void SetKey(SerializedProperty keyProperty, int selectionIndex, ValueStorage constants)
         {
             var keys = GetKeys(constants);
-            keyProperty.stringValue = selectionIndex != -1 && selectionIndex < keys.Count ? keys[selectionIndex] : string.Empty;
+            keyProperty.stringValue = selectionIndex != -1 && selectionIndex < keys.Count
+                ? keys[selectionIndex]
+                : string.Empty;
         }
 
         protected SerializedPropertyType GetValueType(SerializedProperty keyProperty, ValueStorage constants)
@@ -257,7 +304,8 @@ namespace ValueStorage
             return type;
         }
 
-        protected void SetSelectionIndexFromAll(SerializedProperty keyProperty, ref int selectionIndex, ValueStorage constants)
+        protected void SetSelectionIndexFromAll(SerializedProperty keyProperty, ref int selectionIndex,
+            ValueStorage constants)
         {
             int count = 0;
             selectionIndex = constants.intValues.FindIndex(x => x.k == keyProperty.stringValue);
@@ -277,7 +325,8 @@ namespace ValueStorage
             selectionIndex += count;
         }
 
-        protected void SetSelectionIndex(SerializedProperty valueProperty, ref int selectionIndex, ValueStorage constants)
+        protected void SetSelectionIndex(SerializedProperty valueProperty, ref int selectionIndex,
+            ValueStorage constants)
         {
             switch (valueProperty.propertyType)
             {
@@ -292,7 +341,9 @@ namespace ValueStorage
                     break;
             }
         }
-        protected void SetSelectionIndexByKey(SerializedProperty valueProperty, SerializedProperty keyProperty, ref int selectionIndex, ValueStorage constants)
+
+        protected void SetSelectionIndexByKey(SerializedProperty valueProperty, SerializedProperty keyProperty,
+            ref int selectionIndex, ValueStorage constants)
         {
             switch (valueProperty.propertyType)
             {
@@ -307,7 +358,5 @@ namespace ValueStorage
                     break;
             }
         }
-
-
     }
 }
