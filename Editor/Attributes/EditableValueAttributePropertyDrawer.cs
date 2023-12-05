@@ -20,11 +20,11 @@ namespace ValueStorage
             var keyProp = property.FindPropertyRelative("k");
             var valueProp = property.FindPropertyRelative("v");
 
-            bool readOnly = ((EditableValueAttribute)attribute).ReadOnly;
+            bool onlyKey = ((EditableValueAttribute)attribute).OnlyKey;
             
             var afterLabelPosition = EditorGUI.PrefixLabel(position, label);
             var defaultWidth = afterLabelPosition.width;
-            afterLabelPosition.width = !readOnly? defaultWidth * 0.75f : defaultWidth;
+            afterLabelPosition.width = !onlyKey? defaultWidth * 0.75f : defaultWidth;
 
             if (GUI.Button(afterLabelPosition, GetAliaseByKey(valueProp, keyProp, storage), EditorStyles.popup))
             {
@@ -58,7 +58,7 @@ namespace ValueStorage
                 }
             }
 
-            if (!readOnly)
+            if (!onlyKey)
             {
                 afterLabelPosition.x += afterLabelPosition.width;
                 afterLabelPosition.width = defaultWidth * 0.25f;

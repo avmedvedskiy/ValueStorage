@@ -2,11 +2,11 @@
 {
     public class EditableValueAttribute : ValueAttribute
     {
-        public bool ReadOnly { get; }
+        public bool OnlyKey { get; }
 
-        public EditableValueAttribute(string name, bool readOnly = false) : base(name)
+        public EditableValueAttribute(string name, bool onlyKey = false) : base(name)
         {
-            ReadOnly = readOnly;
+            OnlyKey = onlyKey;
         }
     }
 }
