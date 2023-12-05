@@ -8,7 +8,6 @@ namespace ValueStorage
     [CustomPropertyDrawer(typeof(EditableValueAttribute))]
     public class EditableValueAttributePropertyDrawer : ValueAttributePropertyDrawer
     {
-
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             EditorGUI.BeginProperty(position, label, property);
@@ -18,30 +17,18 @@ namespace ValueStorage
                 FindAsset(property.serializedObject);
             }
 
-            var keysRect = default(Rect);
-
             var keyProp = property.FindPropertyRelative("k");
             var valueProp = property.FindPropertyRelative("v");
 
-            float width = position.width / 4f;
+            bool readOnly = ((EditableValueAttribute)attribute).ReadOnly;
+            
+            var afterLabelPosition = EditorGUI.PrefixLabel(position, label);
+            var defaultWidth = afterLabelPosition.width;
+            afterLabelPosition.width = !readOnly? defaultWidth * 0.75f : defaultWidth;
 
-            var labelRect = new Rect(position.x, position.y, EditorGUIUtility.labelWidth, position.height);
-            var buttonRect = new Rect(position.x + EditorGUIUtility.labelWidth, position.y, width, position.height);
-
-            var propertyRect = new Rect(position.x + EditorGUIUtility.labelWidth + width + 10f, position.y, width, position.height);
-
-            EditorGUI.LabelField(labelRect, label);
-
-            switch (valueProp.propertyType)
+            if (GUI.Button(afterLabelPosition, GetAliaseByKey(valueProp, keyProp, storage), EditorStyles.popup))
             {
-                case SerializedPropertyType.Integer: valueProp.intValue = EditorGUI.IntField(propertyRect, valueProp.intValue); break;
-                case SerializedPropertyType.Float: valueProp.floatValue = EditorGUI.FloatField(propertyRect, valueProp.floatValue); break;
-                case SerializedPropertyType.String: valueProp.stringValue = EditorGUI.TextField(propertyRect, valueProp.stringValue); break;
-            }
-
-            if (GUI.Button(buttonRect, GetAliaseByKey(valueProp, keyProp, storage), EditorStyles.popup))
-            {
-                keysRect = new Rect(position.x, position.y, position.width, position.height);
+                var keysRect = new Rect(position.x, position.y, position.width, position.height);
 
                 if (storage)
                 {
@@ -68,6 +55,25 @@ namespace ValueStorage
                 else
                 {
                     Debug.LogErrorFormat("{0} constants [{1}] null", Target.GetType(), Target.storageName);
+                }
+            }
+
+            if (!readOnly)
+            {
+                afterLabelPosition.x += afterLabelPosition.width;
+                afterLabelPosition.width = defaultWidth * 0.25f;
+
+                switch (valueProp.propertyType)
+                {
+                    case SerializedPropertyType.Integer:
+                        valueProp.intValue = EditorGUI.IntField(afterLabelPosition, valueProp.intValue);
+                        break;
+                    case SerializedPropertyType.Float:
+                        valueProp.floatValue = EditorGUI.FloatField(afterLabelPosition, valueProp.floatValue);
+                        break;
+                    case SerializedPropertyType.String:
+                        valueProp.stringValue = EditorGUI.TextField(afterLabelPosition, valueProp.stringValue);
+                        break;
                 }
             }
 

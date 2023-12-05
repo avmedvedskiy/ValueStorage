@@ -17,7 +17,6 @@ namespace ValueStorage
                 FindAsset(property.serializedObject);
             }
 
-            var keysRect = default(Rect);
             if (property.serializedObject.hasModifiedProperties)
                 property.serializedObject.ApplyModifiedProperties();
 
@@ -32,7 +31,7 @@ namespace ValueStorage
             EditorGUI.LabelField(labelRect, label);
             if (GUI.Button(buttonRect, GetAliaseByKey(valueProp, keyProp, storage), EditorStyles.popup))
             {
-                keysRect = new Rect(position.x, position.y, position.width, position.height);
+                var keysRect = new Rect(position.x, position.y, position.width, position.height);
 
                 if (storage)
                 {

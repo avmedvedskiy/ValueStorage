@@ -6,6 +6,7 @@ namespace ValueStorage
     /// Generic value for nodes
     /// </summary>
     /// <typeparam name="T"></typeparam>
+    [Serializable]
     public class GenericValue<T>
     {
         /// <summary>
