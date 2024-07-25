@@ -1,6 +1,6 @@
 {
   "name": "com.avmedvedskiy.valuestorage",
-  "displayName": "Infrastructure.ValueStorage",
+  "displayName": "Editor.ValueStorage",
   "version": "1.0.3",
   "unity": "2018.4",
   "author": "avmedvedskiy",
