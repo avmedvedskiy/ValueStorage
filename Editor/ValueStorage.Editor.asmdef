@@ -1,8 +1,12 @@
 {
-    "name": "Unity.ValueStorage.Runtime",
+    "name": "ValueStorage.Editor",
     "rootNamespace": "",
-    "references": [],
-    "includePlatforms": [],
+    "references": [
+        "ValueStorage.Runtime"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
