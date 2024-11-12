@@ -38,6 +38,8 @@ namespace ValueStorage
                     selectionIndex = EditorGUI.Popup(keysRect, label.text, selectionIndex, aliases.ToArray());
 
                     GenericMenu menu = new GenericMenu();
+                    menu.AddItem(new GUIContent("Edit"), false, () => { Selection.activeObject = storage; });
+                    menu.AddSeparator("");
                     for (int i = 0; i < keys.Count; i++)
                     {
                         int index = i;

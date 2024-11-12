@@ -1,7 +1,7 @@
 {
   "name": "com.avmedvedskiy.valuestorage",
   "displayName": "Editor.ValueStorage",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "unity": "2018.4",
   "author": "avmedvedskiy",
   "description": "Const, Value storages based on Scriptable Objects for dropdown attributes",
