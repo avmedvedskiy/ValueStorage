@@ -24,12 +24,10 @@ namespace ValueStorage
 
             var keyProp = property;
             var valueProp = property;
-
-            var labelRect = new Rect(position.x, position.y, EditorGUIUtility.labelWidth, position.height);
-            var buttonRect = new Rect(position.x + EditorGUIUtility.labelWidth, position.y, position.width - EditorGUIUtility.labelWidth, position.height);
-
-            EditorGUI.LabelField(labelRect, label);
-            if (GUI.Button(buttonRect, GetAliaseByKey(valueProp, keyProp, storage), EditorStyles.popup))
+            
+            
+            position = EditorGUI.PrefixLabel(position, label);
+            if (GUI.Button(position, GetAliaseByKey(valueProp, keyProp, storage), EditorStyles.popup))
             {
                 var keysRect = new Rect(position.x, position.y, position.width, position.height);
 

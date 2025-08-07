@@ -1,12 +1,21 @@
 {
   "name": "com.avmedvedskiy.valuestorage",
   "displayName": "Editor.ValueStorage",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "unity": "2018.4",
   "author": "avmedvedskiy",
   "description": "Const, Value storages based on Scriptable Objects for dropdown attributes",
   "keywords": [
     "valuestorage",
     "conststorage"
-  ]
+  ],
+  "documentationUrl": "https://github.com/avmedvedskiy/ValueStorage",
+  "changelogUrl": "https://github.com/avmedvedskiy/ValueStorage/releases",
+  "_upm":
+  {
+	  "changelog" : "### Fixes & Improvements\n - Update label GUI drawing"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.com"
+  }
 }

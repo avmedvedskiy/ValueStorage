@@ -16,10 +16,7 @@ namespace ValueStorage
         protected int constantsIndex = 0;
         protected ValueStorage storage = null;
 
-        protected ValueAttribute Target
-        {
-            get { return attribute as ValueAttribute; }
-        }
+        protected ValueAttribute Target => attribute as ValueAttribute;
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
@@ -34,12 +31,9 @@ namespace ValueStorage
             var keyProp = property.FindPropertyRelative("k");
             var valueProp = property.FindPropertyRelative("v");
 
-            var labelRect = new Rect(position.x, position.y, EditorGUIUtility.labelWidth, position.height);
-            var buttonRect = new Rect(position.x + EditorGUIUtility.labelWidth, position.y,
-                position.width - EditorGUIUtility.labelWidth, position.height);
-
-            EditorGUI.LabelField(labelRect, label);
-            if (GUI.Button(buttonRect, GetAliaseByKey(valueProp, keyProp, storage), EditorStyles.popup))
+            
+            position = EditorGUI.PrefixLabel(position, label);
+            if (GUI.Button(position, GetAliaseByKey(valueProp, keyProp, storage), EditorStyles.popup))
             {
                 keysRect = new Rect(position.x, position.y, position.width, position.height);
 
